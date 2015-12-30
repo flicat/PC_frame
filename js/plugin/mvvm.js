@@ -500,22 +500,25 @@ define(function(require, exports) {
                         var attr_type = attr_name.match(/^vm-(\w+)/);
 
                         if(attr_type && attr_type.length && attr_type[1]){
-                            switch(attr_type[1]) {
-                                case 'controller': isInRange = false; break;
-                                // html控件
-                                case 'html': controllers[scanStamp] = new VMHtml(that.data, elem, attr_name, attr.value);  break;
-                                // 表单控件
-                                case 'value': controllers[scanStamp] = new VMForm(that.data, elem, attr_name, attr.value); break;
-                                // 样式控件
-                                case 'css': controllers[scanStamp] = new VMCss(that.data, elem, attr_name, attr.value); break;
-                                // 属性控件
-                                case 'attr': controllers[scanStamp] = new VMAttr(that.data, elem, attr_name, attr.value); break;
-                                // 事件控件
-                                case 'on': controllers[scanStamp] = new VMEvent(that.data, elem, attr_name, attr.value); break;
+                            if(attr_type[1] == 'controller'){
+                                isInRange = false;
+                            } else {
+                                switch(attr_type[1]) {
+                                    case 'controller': isInRange = false; break;
+                                    // html控件
+                                    case 'html': controllers[scanStamp] = new VMHtml(that.data, elem, attr_name, attr.value);  break;
+                                    // 表单控件
+                                    case 'value': controllers[scanStamp] = new VMForm(that.data, elem, attr_name, attr.value); break;
+                                    // 样式控件
+                                    case 'css': controllers[scanStamp] = new VMCss(that.data, elem, attr_name, attr.value); break;
+                                    // 属性控件
+                                    case 'attr': controllers[scanStamp] = new VMAttr(that.data, elem, attr_name, attr.value); break;
+                                    // 事件控件
+                                    case 'on': controllers[scanStamp] = new VMEvent(that.data, elem, attr_name, attr.value); break;
+                                }
+                                attrList.push(attr_name);
+                                vmList.push(scanStamp);
                             }
-
-                            attrList.push(attr_name);
-                            vmList.push(scanStamp);
                         }
                     });
 
