@@ -504,7 +504,6 @@ define(function(require, exports) {
                                 isInRange = false;
                             } else {
                                 switch(attr_type[1]) {
-                                    case 'controller': isInRange = false; break;
                                     // html控件
                                     case 'html': controllers[scanStamp] = new VMHtml(that.data, elem, attr_name, attr.value);  break;
                                     // 表单控件
