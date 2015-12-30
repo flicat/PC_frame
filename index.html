@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>首页</title>
+    <link rel="stylesheet" href="css/index.css"/>
+</head>
+<body>
+    <div class="content">
+        <p>
+            <button data-act="my_load,my_click" data-param="name=button1&value=test">按钮1</button>
+            <button data-act="my_click,my_test" data-param="name=button2&value=my_test">按钮2</button>
+            <button data-act="clear">清空结果</button>
+        </p>
+        <textarea id="result"></textarea>
+    </div>
+    <div class="content" vm-controller="my_mvvm">
+        <div class="input-item">
+            <input type="text" vm-value="title"/>
+        </div>
+        <div class="input-item checkbox-group">
+            <label>
+                <input type="checkbox" name="colors" vm-value="colors" value="#8fb4de" />深蓝
+            </label>
+            <label>
+                <input type="checkbox" name="colors" vm-value="colors" value="#b8e2f6" />淡蓝
+            </label>
+            <label>
+                <input type="checkbox" name="colors" vm-value="colors" value="#d5f3f6" />浅蓝
+            </label>
+            <label>
+                <input type="checkbox" name="colors" vm-value="colors" value="#ffd7b0" />橘黄
+            </label>
+            <label>
+                <input type="checkbox" name="colors" vm-value="colors" value="#e79b9b" />橘红
+            </label>
+        </div>
+        <div class="text">
+            <h2 class="title" vm-html="title"></h2>
+            <p vm-html="colors" class="colors">
+                <script type="text/html">
+                    <% if(colors && colors.length){
+                        colors.forEach(function(color) { %>
+                            <span style="background-color: <%= color %>"></span>
+                        <% });
+                    } %>
+                </script>
+            </p>
+        </div>
+    </div>
+    <script src="js/sea.js"></script>
+    <script>seajs.use('index');</script>
+</body>
+</html>
