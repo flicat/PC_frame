@@ -1,73 +1,19 @@
 @charset "utf-8";
 /*!
  * @author liyuelong1020@gmail.com
- * @date 2015/12/30
+ * @date 15-5-21 下午4:04
  * @version 1.0.0
- * @description 首页
+ * @description 样式表
  */
-* {
-    padding: 0;
+
+html {
+    font: 400 14px/1.5em 'RobotoRegular', 'Helvetica Neue' , 'sans-serif';
+}
+body {
     margin: 0;
-    box-sizing: border-box;
-}
-
-.content {
-    width: 70%;
-    padding: 40px;
-    margin: 50px auto;
-    border: 1px solid #999;
-    border-radius: 10px;
-}
-p {
-    text-align: center;
-}
-textarea {
-    width: 100%;
-    height: 200px;
-    padding: 10px;
-    border: 1px solid #bbb;
-    background: none;
-    border-radius: 5px;
-}
-button {
-    margin: 0 10px 25px;
-}
-
-.input-item {
-    width: 100%;
-    margin-bottom: 10px;
-}
-input[type="text"] {
-    width: 100%;
-    padding: 3px 5px;
-    height: 30px;
-    border: 1px solid #bbb;
-    background: none;
-    border-radius: 3px;
-}
-input[type="checkbox"] {
-    vertical-align: middle;
-    margin-right: 3px;
-}
-.checkbox-group {
-    font: 400 12px/1em 'tahoma';
-}
-.title {
-    margin: 5px 0;
-    font: 700 14px/1.5em '微软雅黑';
-}
-.colors:after,
-.colors::after {
-    content: ' ';
-    display: block;
-    width: 0;
-    height: 0;
-    visibility: hidden;
-    clear: both;
-}
-.colors span {
-    display: block;
-    width: 100px;
-    height: 50px;
-    float: left;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    color: #666;
+    background-color: #fff;
 }

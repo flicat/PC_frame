@@ -144,7 +144,7 @@ define(function(require, exports) {
             case 'button': break;
             case 'radio':
             case 'checkbox': event_name = 'click.duplex'; break;
-            default: event_name = 'input.duplex';
+            default: event_name = 'input.duplex change.duplex';
         }
 
         // 表单元素双向绑定
