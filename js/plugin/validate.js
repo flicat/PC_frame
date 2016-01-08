@@ -3,17 +3,6 @@
  * @日期: 2013/01/05
  * @备注: 表单验证
  * @版本： 4.0.2
- *
- * $(form).formCheck() // 表单验证
- * $(form).isCheck(@showResult)   // 表单是否通过验证
- * $(form).bindCheck(@checkBtn, @checkEvent, @sessecCall, @errorCall) // 绑定表单验证
- *
- * @showResult // 是否显示错误提示，默认不显示
- * @checkBtn   // 触发验证的按钮 可选
- * @checkEvent // 触发验证按钮绑定的事件 可选
- * @sessecCall // 验证成功回调函数
- * @errorCall  // 验证失败回调函数
- *
  */
 
 define(function(require, exports) {
@@ -35,6 +24,8 @@ define(function(require, exports) {
         'len': '长度不符！',
         'minlen': '长度不够！',
         'maxlen': '长度太长！',
+        'confpwd': '两次输入的密码不一致！',
+        'creditcard': '信用卡格式错误！',
         'succeed': 'OK！'
     };
 
@@ -151,10 +142,73 @@ define(function(require, exports) {
         }
     };
 
-    // 显示提示信息
-    var showTips = function(formEle, status) {
+    // 提示信息
+    var tips = {
 
-        var inputWrap = formEle.parent();
+        getTipElem: function(inputWrap) {
+            if (inputWrap.find('.help-block').size()) {
+                return inputWrap.find('.help-block');
+            } else {
+                var span = $('<span class="help-block"></span>');
+                inputWrap.append(span);
+                return span;
+            }
+        },
+
+        showTip: function(inputWrap, tips, tipText, isChecked) {
+            if (isChecked) {
+                tips.empty().hide();
+                inputWrap.removeClass('has-error has-success');
+            } else {
+                tips.html(tipText).show();
+                inputWrap.removeClass('has-success has-error').addClass('has-error');
+            }
+        },
+
+        show: function(formEle, status) {
+            var that = this;
+            var inputWrap = formEle.parent().parent();
+
+            var tips = that.getTipElem(inputWrap);
+
+            switch (status) {
+                case 'succeed': that.showTip(inputWrap, tips, lang.succeed, true);
+                    break;
+                case 'empty': that.showTip(inputWrap, tips, lang.empty, false);
+                    break;
+                case 'email': that.showTip(inputWrap, tips, lang.email, false);
+                    break;
+                case 'phone': that.showTip(inputWrap, tips, lang.phone, false);
+                    break;
+                case 'tell': that.showTip(inputWrap, tips, lang.tell, false);
+                    break;
+                case 'number': that.showTip(inputWrap, tips, lang.number, false);
+                    break;
+                case 'integer': that.showTip(inputWrap, tips, lang.integer, false);
+                    break;
+                case 'url': that.showTip(inputWrap, tips, lang.url, false);
+                    break;
+                case 'password': that.showTip(inputWrap, tips, lang.password, false);
+                    break;
+                case 'confpwd': that.showTip(inputWrap, tips, lang.confpwd, false);
+                    break;
+                case 'creditcard': that.showTip(inputWrap, tips, lang.creditcard, false);
+                    break;
+                default: that.showTip(inputWrap, tips, lang.error, false);
+                    break;
+            }
+
+        },
+        hide: function(formEle) {
+            var inputWrap = formEle.parent().parent();
+            var tips = this.getTipElem(inputWrap);
+            this.showTip(inputWrap, tips, lang.succeed, true);
+        }
+    };
+    // 删除提示信息
+    var hideTips = function(formEle) {
+
+        var inputWrap = formEle.parent().parent();
 
         var tips = (function() {
             if (inputWrap.find('.help-block').size()) {
@@ -166,43 +220,8 @@ define(function(require, exports) {
             }
         })();
 
-        var showTip = function(tipText, isChecked) {
-            if (isChecked) {
-                // tips.empty().hide();
-                inputWrap.removeClass('has-error').addClass('has-success');
-            } else {
-                // tips.html(tipText).show();
-                inputWrap.removeClass('has-success').addClass('has-error');
-            }
-        };
-
-        switch (status) {
-            case 'succeed': showTip(lang.succeed, true);
-                break;
-            case 'empty': showTip(lang.empty, false);
-                break;
-            case 'email': showTip(lang.email, false);
-                break;
-            case 'phone': showTip(lang.phone, false);
-                break;
-            case 'tell': showTip(lang.tell, false);
-                break;
-            case 'number': showTip(lang.number, false);
-                break;
-            case 'integer': showTip(lang.integer, false);
-                break;
-            case 'url': showTip(lang.url, false);
-                break;
-            case 'password': showTip(lang.password, false);
-                break;
-            case 'confpwd': showTip(lang.confpwd, false);
-                break;
-            case 'creditcard': showTip(lang.creditcard, false);
-                break;
-            default: showTip(lang.error, false);
-                break;
-        }
-
+        tips.empty().hide();
+        inputWrap.removeClass('has-error').removeClass('has-success');
     };
 
     /**
@@ -219,7 +238,7 @@ define(function(require, exports) {
             if(!!noMessage){
                 return true;
             } else {
-                showTips(ele, rule);
+                tips.show(ele, rule);
             }
         }
 
@@ -342,7 +361,6 @@ define(function(require, exports) {
 
     };
 
-
     /**
      * 给表单元素绑定验证
      */
@@ -365,6 +383,7 @@ define(function(require, exports) {
                 checkFormEle($(_self));                              // 表单验证函数
             });
 
+            tips.hide($(_self));
         });
 
         if(checkBtn){
