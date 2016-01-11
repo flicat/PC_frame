@@ -1,14 +1,13 @@
 /*!
- * @作者: liyuelong1020@gmail.com
+ * @作者: flicat.li@wintour.cn
  * @日期: 2014-06-08
- * @备注: MVVM 框架
+ * @备注: Global MVVM 框架
  *
  * 绑定监听：
- *     new MVVM('@控件区域名称', {a, 123, b: {c: 456}, d: function() {}});
+ *     new MVVM(控件区域, {a, 123, b: {c: 456}, d: function() {}});
  *
  * 声明控制区域
- *     <div vm-controller="@控件区域名称">...</div>
- *
+ *      vm-controller="my-label";
  * 绑定操作：
  *      绑定html赋值：vm-html="a";
  *      绑定表单赋值：vm-value="b.c"; 注意：表单赋值具有双向绑定，修改表单值的同时也会修改数据
@@ -105,7 +104,7 @@ define(function(require, exports) {
             if(that.tmpl){
                 that.elem.html(that.tmplRender(data)).trigger('vm_update_html', newValue);
             } else {
-                that.elem.html(newValue).trigger('vm_update_html', newValue);
+                that.elem.html(String(newValue)).trigger('vm_update_html', newValue);
             }
         }
     };
@@ -206,14 +205,14 @@ define(function(require, exports) {
         } else {
             // 文本框/下拉菜单
             event_name && elem.off('.duplex').on(event_name, function() {
-                var val = val = elem.val();
+                var val = elem.val();
                 that.isModify = true;
                 that.setData(data, val);
             });
 
             // 赋值方法
             setValue = function(newValue) {
-                elem.val(newValue).triggerHandler('vm_change');
+                elem.val(String(newValue)).triggerHandler('vm_change');
             };
         }
 
@@ -261,7 +260,7 @@ define(function(require, exports) {
 
         if(that.oldValue !== newValue){
             that.oldValue = newValue;
-            that.elem.css(that.prop, newValue);
+            that.elem.css(that.prop, String(newValue));
         }
     };
 

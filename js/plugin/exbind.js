@@ -2,29 +2,6 @@
  * @作者: liyuelong1020@gmail.com
  * @日期: 2014-05-28
  * @备注: 框架
- *
- * 注册控件
- *   $.register('@控件名称', '@触发事件', function(e) {
- *      e.param   // 事件参数
- *      e.next()  // 执行下一个控件回调
- *      e.stop()  // 停止执行后续控件回调
- *   });
- *
- * 声明控件
- *   <button data-act="@控件名称,@控件名称..." data-param="@控件参数"></button>
- *
- * 控件方法
- *   $.fn.WebInit                // 初始化节点及所有子节点控件（默认执行）
- *   $.fn.define(@params, @acts)   // 给节点注册已有控件
- *   $.fn.act(@acts, @event)       // 触发控件
- *
- *
- * @控件名称 (String)
- * @触发事件 (EventName) load|click|mouseover...
- * @params // 控件参数 (Object)
- * @acts   // 控件名称
- * @event  // 事件名称 (EventName)
- *
  */
 
 define(function(require, exports) {
@@ -244,6 +221,7 @@ define(function(require, exports) {
                 var params = that.getParam(element.attr('data-param'));
                 var acts = that.getAct(element.attr('data-act'));
                 that.registerController(element, params, acts);
+                element.removeAttr('data-param');
             }
         },
 
