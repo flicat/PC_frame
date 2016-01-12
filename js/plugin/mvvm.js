@@ -1,7 +1,7 @@
 /*!
- * @作者: flicat.li@wintour.cn
- * @日期: 2014-06-08
- * @备注: Global MVVM 框架
+ * @作者: liyuelong1020@gmail.com
+ * @日期: 2016-01-12
+ * @备注: MVVM 框架
  *
  * 绑定监听：
  *     new MVVM(控件区域, {a, 123, b: {c: 456}, d: function() {}});
@@ -286,7 +286,7 @@ define(function(require, exports) {
 
         if(that.oldValue !== newValue){
             that.oldValue = newValue;
-            that.elem.attr(that.prop, newValue);
+            that.elem.attr(that.prop, String(newValue));
         }
     };
 
@@ -481,6 +481,18 @@ define(function(require, exports) {
             var that = this;
             var controllers = that.controllers;
 
+            // 获取属性数组
+            var getAttrArr = function(attributes) {
+                var arr = [];
+                $.each(attributes || [], function(i, item) {
+                    arr.push({
+                        name: item.name,
+                        value: item.value
+                    });
+                });
+                return arr;
+            };
+
             var scanAttr = function(elem) {
                 if(!elem.__global_scan_stamp__ && String(elem.nodeName).toLowerCase() !== 'script'){
                     elem.__global_scan_stamp__ = 'vm_' + Date.now() + '_' + Math.ceil(Math.random() * 1E6);
@@ -493,7 +505,7 @@ define(function(require, exports) {
 
                     // 是否需要继续扫描
                     var isInRange = true;
-                    $.each(elem.attributes || [], function(i, attr) {
+                    $.each(getAttrArr(elem.attributes), function(i, attr) {
                         var attr_name = $.trim(attr.name || '');
                         var scanStamp = 'attr_' + Date.now() + '_' + Math.ceil(Math.random() * 1E6);
                         var attr_type = attr_name.match(/^vm-(\w+)/);
