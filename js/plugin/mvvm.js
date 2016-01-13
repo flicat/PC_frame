@@ -117,7 +117,6 @@ define(function(require, exports) {
         this.oldValue = null;
         this.getData = compile_get(value);
         this.setData = compile_set(value);
-        this.isModify = false;      // 防止循环赋值
         this.isFlag = true;         // 防止循环赋值,单选/复选组只遍历第一个
         this.init();
         this.update();
@@ -153,7 +152,6 @@ define(function(require, exports) {
                 inputGroup = $('input[name="' + name + '"]');
                 elem.off('.duplex').on(event_name, function() {
                     var val = inputGroup.filter(':checked').val();
-                    that.isModify = true;
                     that.setData(data, val);
                 });
                 that.isFlag = (inputGroup[0] == elem.get(0));
@@ -173,7 +171,6 @@ define(function(require, exports) {
                     inputGroup.filter(':checked').each(function() {
                         val.push(this.value);
                     });
-                    that.isModify = true;
                     that.setData(data, val);
                 });
                 that.isFlag = (inputGroup[0] == elem.get(0));
@@ -193,7 +190,6 @@ define(function(require, exports) {
                 // 单独的单选/复选
                 elem.off('.duplex').on(event_name, function() {
                     var val = elem.prop('checked') ? elem.val() : '';
-                    that.isModify = true;
                     that.setData(data, val);
                 });
 
@@ -206,7 +202,6 @@ define(function(require, exports) {
             // 文本框/下拉菜单
             event_name && elem.off('.duplex').on(event_name, function() {
                 var val = elem.val();
-                that.isModify = true;
                 that.setData(data, val);
             });
 
@@ -220,8 +215,7 @@ define(function(require, exports) {
         that.update = function(name, value, oldValue, path) {
             var newValue;
 
-            if(!that.isModify && that.isFlag){
-
+            if(that.isFlag){
                 try {
                     newValue = that.getData(data)();
                 } catch(e) {
@@ -232,8 +226,6 @@ define(function(require, exports) {
                     that.oldValue = Public.isArray(newValue) ? String(newValue) : newValue;
                     setValue(newValue);
                 }
-            } else {
-                that.isModify = false;
             }
         };
     };
@@ -286,7 +278,7 @@ define(function(require, exports) {
 
         if(that.oldValue !== newValue){
             that.oldValue = newValue;
-            that.elem.attr(that.prop, String(newValue));
+            that.elem.attr(that.prop, newValue);
         }
     };
 
