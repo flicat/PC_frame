@@ -47,4 +47,5 @@ define(function (require, exports) {
     };
     new MVVM('my_mvvm', data);
 
+    prompt('测试信息', navigator.userAgent + '  ' + navigator.platform);
 });
